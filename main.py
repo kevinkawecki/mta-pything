@@ -5,15 +5,33 @@ import math
 
 from mta import LTrain
 from helper import from_minutes
+from display import DisplayDriver
 
-UPDATE_SEC = 5
+UPDATE_SEC = 10
 
 # Morgan ave stop id = L14N or L14S
 morganStop = LTrain("L14")
 
-while True:
-    N_times, S_times = morganStop.getNextTimes()
-    print(f"Next Manhattan L: {from_minutes(N_times[0])}")
-    print(f"Next Canarsie L: {from_minutes(S_times[0])}")
-    time.sleep(UPDATE_SEC)
-    
+display = DisplayDriver()
+
+N_times, S_times = morganStop.getNextTimes()
+display.setNTimes(N_times)
+display.setSTimes(S_times)
+
+count = 0
+
+try: 
+    while True:
+        if count > UPDATE_SEC:
+            count = 0
+            N_times, S_times = morganStop.getNextTimes()
+            display.setNTimes(N_times)
+            display.setSTimes(S_times)
+
+        display.loop()
+
+        time.sleep(1)
+        count += 1
+
+except KeyboardInterrupt:
+    sys.exit(0)

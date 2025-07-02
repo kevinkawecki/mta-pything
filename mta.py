@@ -30,7 +30,6 @@ class LTrain:
                 for stop in entity.trip_update.stop_time_update:
                     stop_id = stop.stop_id
                     if stop_id in self.findStopN or stop_id in self.findStopS: 
-                        #print(stop_id)
                         # Keep only future arrival.time (gtfs data can give past arrival.time, which is useless and show negative time as result)
                         now = time.time()
                         if int(stop.arrival.time) > int(now):
@@ -44,6 +43,6 @@ class LTrain:
                             elif stop_id in self.findStopS: 
                                 S_times.append(minutes_from_now)
 
-        N_times_next_3 = N_times[:3]
-        S_times_next_3 = S_times[:3]
+        N_times_next_3 = N_times[:5]
+        S_times_next_3 = S_times[:5]
         return N_times_next_3, S_times_next_3
